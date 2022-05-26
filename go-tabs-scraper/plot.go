@@ -123,13 +123,13 @@ func main() {
 		}
 	}
 
-	// Naive stats about TAB values
+	// Naive (overall, sampled set) stats about TAB values
 	tabConstMean, _ := stats.Mean(tabSamples)
 	constMeanLine, _ := plotter.NewLine(plotter.XYs{
 		{X: 0, Y: tabConstMean},
 		{X: float64(sampleSize) * float64(w), Y: tabConstMean},
 	})
-	constMeanLine.LineStyle.Dashes = []vg.Length{2}
+	// constMeanLine.LineStyle.Dashes = []vg.Length{2}
 	constMeanLine.Color = colornames.Cyan
 
 	p.Add(constMeanLine)
@@ -140,8 +140,8 @@ func main() {
 		{X: 0, Y: tabConstMed},
 		{X: float64(sampleSize) * float64(w), Y: tabConstMed},
 	})
-	constMedLine.LineStyle.Dashes = []vg.Length{3}
-	constMedLine.Color = colornames.Darksalmon
+	// constMedLine.LineStyle.Dashes = []vg.Length{3}
+	constMedLine.Color = colornames.Lightgreen
 	p.Add(constMedLine)
 	p.Legend.Add("Samples Median", constMedLine)
 
