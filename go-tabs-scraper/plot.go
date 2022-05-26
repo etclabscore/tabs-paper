@@ -13,7 +13,9 @@ import (
 	"strings"
 
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/montanaflynn/stats"
 	"github.com/whilei/go-tabs-scraper/lib"
+	"golang.org/x/image/colornames"
 	"gonum.org/v1/plot"
 	"gonum.org/v1/plot/plotter"
 	"gonum.org/v1/plot/vg"
@@ -29,24 +31,28 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	width := vg.Length(800)
-	w := width / vg.Length(len(matches))
-	if *maxSamples > int64(len(matches)) {
-		w = width / vg.Length(*maxSamples)
+	sampleSize := int64(len(matches))
+	if *maxSamples < int64(len(matches)) {
+		sampleSize = *maxSamples
 	}
+
+	width := vg.Length(800)
+	w := width / vg.Length(sampleSize)
+
 	p, _ := plot.New()
-	p.Title.Text = "Sampled Blocks: Miner (private) vs. Tx (public) balances"
+	p.Title.Text = fmt.Sprintf("Sampled Blocks: Miner (private) vs. Tx (public) balances, samples=%d", sampleSize)
 	p.Y.Label.Text = "Summed Balance"
 	p.X.Label.Text = "Blocks (discontinuous, but chronological)"
 	p.Legend.Top = true
 
+	tabSamples := []float64{}
 	for mi, m := range matches {
-
-		if int64(mi) > *maxSamples {
+		if int64(mi) >= sampleSize {
 			break
 		}
-
 		log.Printf("Reading match %d/%d %s\n", mi, len(matches), m)
+
+		tab := float64(0)
 
 		b, err := ioutil.ReadFile(m)
 		if err != nil {
@@ -59,16 +65,17 @@ func main() {
 			log.Fatalln(err)
 		}
 
-		// I want all txes
-		// to compose a block
-
+		// Get the miner (private) balance
 		minerBal, _ := lib.PrettyBalance(ap.MinerBalanceAtParent).Float64()
+
+		// Add it to our TAB value / block
+		tab += minerBal
 
 		group := plotter.Values{minerBal}
 		lastBarChart, _ := plotter.NewBarChart(group, w)
 		lastBarChart.Color, _ = ParseHexColor("#ff0000") // mustAddressToColor(ap.Header.Coinbase)
 		lastBarChart.LineStyle.Width = 0
-		lastBarChart.XMin = 0 + float64(width)/float64(len(matches))*float64(mi)
+		lastBarChart.XMin = float64(w) * float64(mi)
 		p.Add(lastBarChart)
 
 		if mi == 0 {
@@ -76,7 +83,9 @@ func main() {
 		}
 
 		// collect all the unique transaction balances
-		dict := map[common.Address]bool{}
+		dict := map[common.Address]bool{
+			ap.Header.Coinbase: true,
+		}
 		bals := []float64{}
 		for _, tx := range ap.AppTxes {
 			// dedupe
@@ -87,7 +96,12 @@ func main() {
 			}
 			bal, _ := lib.PrettyBalance(tx.BalanceAtParent).Float64()
 			bals = append(bals, bal)
+
+			// Add this val to the block TAB as well (order does not matter)
+			tab += bal
 		}
+
+		tabSamples = append(tabSamples, tab)
 
 		// sort the unique balances to ascending order
 		sort.Float64s(bals)
@@ -108,6 +122,28 @@ func main() {
 			}
 		}
 	}
+
+	// Naive stats about TAB values
+	tabConstMean, _ := stats.Mean(tabSamples)
+	constMeanLine, _ := plotter.NewLine(plotter.XYs{
+		{X: 0, Y: tabConstMean},
+		{X: float64(sampleSize) * float64(w), Y: tabConstMean},
+	})
+	constMeanLine.LineStyle.Dashes = []vg.Length{2}
+	constMeanLine.Color = colornames.Aliceblue
+
+	p.Add(constMeanLine)
+	p.Legend.Add("Samples Mean", constMeanLine)
+
+	tabConstMed, _ := stats.Median(tabSamples)
+	constMedLine, _ := plotter.NewLine(plotter.XYs{
+		{X: 0, Y: tabConstMed},
+		{X: float64(sampleSize) * float64(w), Y: tabConstMed},
+	})
+	constMedLine.LineStyle.Dashes = []vg.Length{3}
+	constMedLine.Color = colornames.Darksalmon
+	p.Add(constMedLine)
+	p.Legend.Add("Samples Median", constMedLine)
 
 	os.MkdirAll("out", os.ModePerm)
 	if err := p.Save(800, 600, "out/stacked_balances.png"); err != nil {
