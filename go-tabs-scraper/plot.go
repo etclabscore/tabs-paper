@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+	"time"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/montanaflynn/stats"
@@ -23,7 +24,7 @@ import (
 
 func main() {
 	datadir := flag.String("datadir", "data", "Root data directory. Will be created if not existing.")
-	maxSamples := flag.Int64("max-samples", 1000, "Max number of samples. (default=50)")
+	maxSamples := flag.Int64("max-samples", 4*60*24, "Max number of samples. (default=50)")
 	flag.Parse()
 
 	matches, err := filepath.Glob(filepath.Join(*datadir, "block_*"))
@@ -36,11 +37,17 @@ func main() {
 		sampleSize = *maxSamples
 	}
 
-	width := vg.Length(800)
+	sampleWidth := float64(1)
+	width := vg.Length(float64(sampleSize) * sampleWidth)
 	w := width / vg.Length(sampleSize)
 
+	estBlockTime := time.Second * 13
+	estSecondsSpannedBySample := estBlockTime * time.Duration(sampleSize)
+
 	p, _ := plot.New()
-	p.Title.Text = fmt.Sprintf("Sampled Blocks: Miner (private) vs. Tx (public) balances, samples=%d", sampleSize)
+	p.Title.Text = fmt.Sprintf("Data=%s: Sampled Blocks: Miner (private) vs. Tx (public) balances, samples=%d (~%v)",
+		*datadir,
+		sampleSize, estSecondsSpannedBySample.Truncate(time.Second))
 	p.Y.Label.Text = "Summed Balance"
 	p.X.Label.Text = "Blocks (discontinuous, but chronological)"
 	p.Legend.Top = true
@@ -111,7 +118,7 @@ func main() {
 			bal := bals[i]
 			vals := plotter.Values{bal}
 			b, _ := plotter.NewBarChart(vals, w)
-			b.Color, _ = ParseHexColor("#0000ff")
+			b.Color = colornames.Lightblue // ParseHexColor("#0000ff") // == blue
 			b.LineStyle.Width = 0
 			b.StackOn(lastBarChart)
 			p.Add(b)
@@ -124,16 +131,17 @@ func main() {
 	}
 
 	// Naive (overall, sampled set) stats about TAB values
+
 	tabConstMean, _ := stats.Mean(tabSamples)
 	constMeanLine, _ := plotter.NewLine(plotter.XYs{
 		{X: 0, Y: tabConstMean},
 		{X: float64(sampleSize) * float64(w), Y: tabConstMean},
 	})
 	// constMeanLine.LineStyle.Dashes = []vg.Length{2}
-	constMeanLine.Color = colornames.Cyan
+	constMeanLine.Color = colornames.Mediumpurple
 
 	p.Add(constMeanLine)
-	p.Legend.Add("Samples Mean", constMeanLine)
+	p.Legend.Add(fmt.Sprintf("Samples Mean=%0.2f", tabConstMean), constMeanLine)
 
 	tabConstMed, _ := stats.Median(tabSamples)
 	constMedLine, _ := plotter.NewLine(plotter.XYs{
@@ -143,10 +151,43 @@ func main() {
 	// constMedLine.LineStyle.Dashes = []vg.Length{3}
 	constMedLine.Color = colornames.Lightgreen
 	p.Add(constMedLine)
-	p.Legend.Add("Samples Median", constMedLine)
+	p.Legend.Add(fmt.Sprintf("Samples Median=%0.2f", tabConstMed), constMedLine)
+
+	// Running values (eg expected TABS)
+
+	tabs := tabConstMed // starting value
+	tabsVals := plotter.XYs{}
+	for ti, tab := range tabSamples {
+		if tab > tabs {
+			tabs = tabs * 4097 / 4096
+		} else if tab < tabs {
+			tabs = tabs * 4095 / 4096
+		} else {
+			tabs = tabs * 4096 / 4096 // == 1 == constant
+		}
+		tabsVals = append(tabsVals, plotter.XY{
+			X: float64(ti) * float64(w),
+			Y: tabs,
+		})
+	}
+	runningTABSLine, _ := plotter.NewLine(tabsVals)
+	runningTABSLine.LineStyle.Dashes = []vg.Length{3}
+	runningTABSLine.Color = colornames.Black
+	p.Legend.Add(fmt.Sprintf("Simulated TABS (x=%d,y=%0.2f;x=%d,y=%0.2f)",
+		0, tabsVals[0].Y,
+		sampleSize, tabsVals[len(tabsVals)-1].Y), runningTABSLine)
+	p.Add(runningTABSLine)
+
+	// Truncate the Y limit to p95 tab
+	// For ETC this makes things more visible... sadly.
+	// Can comment for ETH, eg. the comment here:
+	// if strings.Contains(strings.ToLower(*datadir), "etc") {
+	// }
+	p.Y.Max, _ = stats.Percentile(tabSamples, 95)
 
 	os.MkdirAll("out", os.ModePerm)
-	if err := p.Save(800, 600, "out/stacked_balances.png"); err != nil {
+	if err := p.Save(1200, 600, fmt.Sprintf("out/%s_stacked_balances.png",
+		strings.ReplaceAll(*datadir, string(filepath.Separator), ""))); err != nil {
 		log.Panic(err)
 	}
 }
