@@ -9,6 +9,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -20,6 +21,7 @@ import (
 
 func main() {
 	datadir := flag.String("datadir", "data", "Root data directory. Will be created if not existing.")
+	maxSamples := flag.Int64("max-samples", 1000, "Max number of samples. (default=50)")
 	flag.Parse()
 
 	matches, err := filepath.Glob(filepath.Join(*datadir, "block_*"))
@@ -29,9 +31,21 @@ func main() {
 
 	width := vg.Length(800)
 	w := width / vg.Length(len(matches))
+	if *maxSamples > int64(len(matches)) {
+		w = width / vg.Length(*maxSamples)
+	}
 	p, _ := plot.New()
+	p.Title.Text = "Sampled Blocks: Miner (private) vs. Tx (public) balances"
+	p.Y.Label.Text = "Summed Balance"
+	p.X.Label.Text = "Blocks (discontinuous, but chronological)"
+	p.Legend.Top = true
 
 	for mi, m := range matches {
+
+		if int64(mi) > *maxSamples {
+			break
+		}
+
 		log.Printf("Reading match %d/%d %s\n", mi, len(matches), m)
 
 		b, err := ioutil.ReadFile(m)
@@ -57,7 +71,13 @@ func main() {
 		lastBarChart.XMin = 0 + float64(width)/float64(len(matches))*float64(mi)
 		p.Add(lastBarChart)
 
+		if mi == 0 {
+			p.Legend.Add("Miner", lastBarChart)
+		}
+
+		// collect all the unique transaction balances
 		dict := map[common.Address]bool{}
+		bals := []float64{}
 		for _, tx := range ap.AppTxes {
 			// dedupe
 			if _, ok := dict[tx.From]; ok {
@@ -66,6 +86,15 @@ func main() {
 				dict[tx.From] = true
 			}
 			bal, _ := lib.PrettyBalance(tx.BalanceAtParent).Float64()
+			bals = append(bals, bal)
+		}
+
+		// sort the unique balances to ascending order
+		sort.Float64s(bals)
+
+		// iterate backwards
+		for i := len(bals) - 1; i >= 0; i-- {
+			bal := bals[i]
 			vals := plotter.Values{bal}
 			b, _ := plotter.NewBarChart(vals, w)
 			b.Color, _ = ParseHexColor("#0000ff")
@@ -73,6 +102,10 @@ func main() {
 			b.StackOn(lastBarChart)
 			p.Add(b)
 			lastBarChart = b
+
+			if mi == 0 && i == 0 {
+				p.Legend.Add("Public", b)
+			}
 		}
 	}
 
