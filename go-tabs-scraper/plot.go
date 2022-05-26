@@ -130,7 +130,7 @@ func main() {
 		{X: float64(sampleSize) * float64(w), Y: tabConstMean},
 	})
 	constMeanLine.LineStyle.Dashes = []vg.Length{2}
-	constMeanLine.Color = colornames.Aliceblue
+	constMeanLine.Color = colornames.Cyan
 
 	p.Add(constMeanLine)
 	p.Legend.Add("Samples Mean", constMeanLine)
