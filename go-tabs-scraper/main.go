@@ -19,6 +19,7 @@ import (
 	"math/rand"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/math"
@@ -62,7 +63,8 @@ func main() {
 	}
 
 	if *spanStart == math.MaxInt64 {
-		latest, err := client.BlockNumber(bkgrnd)
+		con, _ := context.WithTimeout(bkgrnd, time.Minute)
+		latest, err := client.BlockNumber(con)
 		if err != nil {
 			log.Fatalln(err)
 		}
@@ -77,9 +79,12 @@ func main() {
 	for blockN := *spanStart; blockN <= *spanStart+*spanRange; blockN++ {
 
 		try := 0
-		err := scrapeBlock(datadir, blockN, spanRate, client, bkgrnd, signer)
+		con, _ := context.WithTimeout(bkgrnd, time.Minute)
+		err := scrapeBlock(datadir, blockN, spanRate, client, con, signer)
 		for ; err != nil && try < *retryLimit; try++ {
-			err = scrapeBlock(datadir, blockN, spanRate, client, bkgrnd, signer)
+			log.Printf("error=%v try=%d/%d", err, try, *retryLimit)
+			con, _ := context.WithTimeout(bkgrnd, time.Minute)
+			err = scrapeBlock(datadir, blockN, spanRate, client, con, signer)
 		}
 		if err != nil {
 			log.Fatalln("[scrape block]", err)
@@ -87,7 +92,7 @@ func main() {
 	}
 }
 
-func scrapeBlock(datadir *string, blockN uint64, spanRate *float64, client *ethclient.Client, bkgrnd context.Context, signer types.Signer) (error) {
+func scrapeBlock(datadir *string, blockN uint64, spanRate *float64, client *ethclient.Client, bkgrnd context.Context, signer types.Signer) error {
 	blockFilePath := filepath.Join(*datadir, fmt.Sprintf("block_%v", blockN))
 	if fi, err := os.Stat(blockFilePath); err == nil || os.IsExist(err) {
 		log.Println("Data exists, skipping", fi.Name())

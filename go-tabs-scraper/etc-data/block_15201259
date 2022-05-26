@@ -1,0 +1,71 @@
+{
+    "Header": {
+        "parentHash": "0x43b27c4c7bdd70ae623106eea5f80ffe1b29de1d7a2dd7bc98d6b468a573d6b1",
+        "sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
+        "miner": "0x54286566de3b4e14998b27587475334608a7eb97",
+        "stateRoot": "0xb395b386d9d9d82c4cdaf47e43138c277f8ea9958c6120ead36f75f3581719ac",
+        "transactionsRoot": "0xee0c9b09f60dd935ec65e92965fbb83af9f637f0b72d000fa49bb68fd6d6baab",
+        "receiptsRoot": "0xa3fa324b9f52e1b6970b14150118cdff76e773effebbdb8d1c1cd4757562e244",
+        "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "difficulty": "0x1193ba87f95eb",
+        "number": "0xe7f3eb",
+        "gasLimit": "0x7a3083",
+        "gasUsed": "0xae00",
+        "timestamp": "0x628ea5d8",
+        "extraData": "0x486976656f6e206575",
+        "mixHash": "0x5e73706b176b3a2b686f6b20ab3258d4504a29b96277ef652e33c8675196e863",
+        "nonce": "0x8ae6d74365e0d408",
+        "baseFeePerGas": null,
+        "hash": "0x8659c9e7259dbc80cee76f3a81c903355442273e1c6c56e088ebc5265b1145bd"
+    },
+    "TxesN": 2,
+    "MinerBalanceAtParent": 24586368017683378657842,
+    "AppTxes": [
+        {
+            "CTransaction": {
+                "type": "0x0",
+                "nonce": "0x4bf5",
+                "gasPrice": "0x12a05f200",
+                "maxPriorityFeePerGas": null,
+                "maxFeePerGas": null,
+                "gas": "0x5bf8",
+                "value": "0x0",
+                "input": "0x3c41757468656e7469636174696f6e3e0d0a20203c5348412d3235363e396335656432383030636562373937303461643261316630363437376366383731626238613534663030373536633537313861306363633863333062646333653c2f5348412d3235363e0d0a20203c54696d657374616d703e313635333531353733333c2f54696d657374616d703e0d0a3c2f41757468656e7469636174696f6e3e",
+                "v": "0x9d",
+                "r": "0x19fa8ba00ec4affc17e8cc52537175b31d3dc442f4b6e3007113747a997e53de",
+                "s": "0x4e7838fda620e21c0c14e256746a69cf2a190548968145990f88c09677a0016",
+                "to": "0x5756980e54d7cce3a2bc18fb58c8eb9863dd58e5",
+                "hash": "0x8b9333a9479e74398b927746711d36a4e9f51d630f6b20bd5985bd7b8f385d26"
+            },
+            "From": "0x5756980e54d7cce3a2bc18fb58c8eb9863dd58e5",
+            "BalanceAtParent": 739390536000000000,
+            "BalanceAtParentPretty": "0.739390536",
+            "Index": 0
+        },
+        {
+            "CTransaction": {
+                "type": "0x0",
+                "nonce": "0x18a58",
+                "gasPrice": "0x3b9aca00",
+                "maxPriorityFeePerGas": null,
+                "maxFeePerGas": null,
+                "gas": "0xc350",
+                "value": "0x3fb3df2868fe9f",
+                "input": "0x",
+                "v": "0x9e",
+                "r": "0x5b21311e43eb2891c05636de03b319d137331410694961abab71d64f9adeb84c",
+                "s": "0x1c551d35cddb15f048d771e285e82ff4c7e4a0d3ee4eab9edf1bb1b954cf9bd3",
+                "to": "0xa891ab7556de5dacf1228aa27efececcb667e642",
+                "hash": "0x771d2b0a3d9d511423056ccb69ef7fa4be96fd87f63fdf64c7ce8a2eb7073e7d"
+            },
+            "From": "0xbcf9af410cf09bdf81a73fe5def32457b0e469ac",
+            "BalanceAtParent": 50535146991388645045,
+            "BalanceAtParentPretty": "50.535146991388645045",
+            "Index": 1
+        }
+    ],
+    "TABWithoutMiner": 51274537527388645045,
+    "TABWithoutMinerPretty": "51.274537527388645043",
+    "TABWithMiner": 24637642555210767302887,
+    "TABWithMinerPretty": "24637.642555210767302887"
+}
