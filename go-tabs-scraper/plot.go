@@ -52,10 +52,28 @@ func main() {
 
 		group := plotter.Values{minerBal}
 		lastBarChart, _ := plotter.NewBarChart(group, w)
-		lastBarChart.Color = mustAddressToColor(ap.Header.Coinbase)
+		lastBarChart.Color, _ = ParseHexColor("#ff0000") // mustAddressToColor(ap.Header.Coinbase)
+		lastBarChart.LineStyle.Width = 0
 		lastBarChart.XMin = 0 + float64(width)/float64(len(matches))*float64(mi)
-
 		p.Add(lastBarChart)
+
+		dict := map[common.Address]bool{}
+		for _, tx := range ap.AppTxes {
+			// dedupe
+			if _, ok := dict[tx.From]; ok {
+				continue
+			} else {
+				dict[tx.From] = true
+			}
+			bal, _ := lib.PrettyBalance(tx.BalanceAtParent).Float64()
+			vals := plotter.Values{bal}
+			b, _ := plotter.NewBarChart(vals, w)
+			b.Color, _ = ParseHexColor("#0000ff")
+			b.LineStyle.Width = 0
+			b.StackOn(lastBarChart)
+			p.Add(b)
+			lastBarChart = b
+		}
 	}
 
 	os.MkdirAll("out", os.ModePerm)
