@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/lucasb-eyer/go-colorful"
 	"github.com/montanaflynn/stats"
 	"github.com/whilei/go-tabs-scraper/lib"
 	"golang.org/x/image/colornames"
@@ -113,20 +114,33 @@ func main() {
 		// sort the unique balances to ascending order
 		sort.Float64s(bals)
 
+		// palette, _ := colorful.WarmPalette(len(bals))
+
+		balsSum, _ := stats.Sum(bals)
+
 		// iterate backwards
 		for i := len(bals) - 1; i >= 0; i-- {
 			bal := bals[i]
 			vals := plotter.Values{bal}
 			b, _ := plotter.NewBarChart(vals, w)
-			b.Color = colornames.Lightblue // ParseHexColor("#0000ff") // == blue
+			// b.Color = colornames.Lightblue // ParseHexColor("#0000ff") // == blue
+			// cr, cg, cb, _ := colornames.Lightblue.RGBA()
+
+			maxBlue, baseBlue := 0.95, 0.3
+			// delta := (maxBlue - baseBlue) / float64(len(bals))
+			delta := (maxBlue - baseBlue) * (bal / balsSum)
+			b.Color = colorful.FastLinearRgb(0.1+(delta/2), 0.1+(delta/2), baseBlue+delta)
+
+			// b.Color = palette[i]
 			b.LineStyle.Width = 0
-			b.StackOn(lastBarChart)
-			p.Add(b)
-			lastBarChart = b
 
 			if mi == 0 && i == 0 {
 				p.Legend.Add("Public", b)
 			}
+
+			b.StackOn(lastBarChart)
+			p.Add(b)
+			lastBarChart = b
 		}
 	}
 

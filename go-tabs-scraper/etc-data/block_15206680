@@ -1,0 +1,71 @@
+{
+    "Header": {
+        "parentHash": "0x7cabe6baa5f4e4f50ed6645366d594ac38fe52e061d5c216dda3466cc2ffc6f5",
+        "sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
+        "miner": "0xa6e43e5d497ce1f4d28b4270630e97308eda8b3e",
+        "stateRoot": "0x9b224e4e8ba9c525213c81b456c9777dfd48b75ea63d43c38ecc0e88c2f94648",
+        "transactionsRoot": "0x7a7bac633fed2692780bdda48294279ea0cd62d236e16ffb1c8ca82f3076fa0d",
+        "receiptsRoot": "0xa3fa324b9f52e1b6970b14150118cdff76e773effebbdb8d1c1cd4757562e244",
+        "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "difficulty": "0x116427cc67f55",
+        "number": "0xe80918",
+        "gasLimit": "0x7a1200",
+        "gasUsed": "0xae00",
+        "timestamp": "0x628fbb99",
+        "extraData": "0x457468436c617373696350504c4e532f326d696e6572735f4555",
+        "mixHash": "0x44f8532fa1f14f2e990e7e018eff61444c5571065fcf404c559b9744d0e3e690",
+        "nonce": "0x9c69e011756d1dfd",
+        "baseFeePerGas": null,
+        "hash": "0x3fe0602fe11ea9050778c7bf76365ac75d9e72da0caf7afd5aaf404aa3adcb07"
+    },
+    "TxesN": 2,
+    "MinerBalanceAtParent": 5470441495059045265582,
+    "AppTxes": [
+        {
+            "CTransaction": {
+                "type": "0x0",
+                "nonce": "0x4c4f",
+                "gasPrice": "0x12a05f200",
+                "maxPriorityFeePerGas": null,
+                "maxFeePerGas": null,
+                "gas": "0x5bf8",
+                "value": "0x0",
+                "input": "0x3c41757468656e7469636174696f6e3e0d0a20203c5348412d3235363e356366333939316231643539343734626230653365373536663930313835663731306632336163303537393065393266666563623665313132383363316630373c2f5348412d3235363e0d0a20203c54696d657374616d703e313635333538363834303c2f54696d657374616d703e0d0a3c2f41757468656e7469636174696f6e3e",
+                "v": "0x9d",
+                "r": "0xdbddde591bd5abaa837c65db727d00a8abec29c61c487d92fd01efe47cf53297",
+                "s": "0x502a6ca6ed60906ca48068e5467c1ccfdd721a06c4d83fa1abf812345c64ec40",
+                "to": "0x5756980e54d7cce3a2bc18fb58c8eb9863dd58e5",
+                "hash": "0x12ee3b3f71c3c6f6b733a60aaa6b9e6e69d9efc75dea3186f089d39bdbdcf88e"
+            },
+            "From": "0x5756980e54d7cce3a2bc18fb58c8eb9863dd58e5",
+            "BalanceAtParent": 728481176000000000,
+            "BalanceAtParentPretty": "0.728481176",
+            "Index": 0
+        },
+        {
+            "CTransaction": {
+                "type": "0x0",
+                "nonce": "0x18cbb",
+                "gasPrice": "0x3b9aca00",
+                "maxPriorityFeePerGas": null,
+                "maxFeePerGas": null,
+                "gas": "0xc350",
+                "value": "0x133d82ae114c378",
+                "input": "0x",
+                "v": "0x9d",
+                "r": "0x7ae718e7a0bbf4c73eb475ad0a61ae130fc519e4adacf9d4cdd831b3a7d90140",
+                "s": "0x5157241f64c86305ecd28834ed03f665b8b0594dbe51df61c39080fb0e300614",
+                "to": "0x26480dcec09df8b9c5c78fd818367ef3de1db385",
+                "hash": "0x1904ec08b880a24fed1f1a7cb0b890bb9af23f7b2394ad8d77c86f30e8f2f6be"
+            },
+            "From": "0xbcf9af410cf09bdf81a73fe5def32457b0e469ac",
+            "BalanceAtParent": 51485984279846777072,
+            "BalanceAtParentPretty": "51.485984279846777072",
+            "Index": 1
+        }
+    ],
+    "TABWithoutMiner": 52214465455846777072,
+    "TABWithoutMinerPretty": "52.21446545584677707",
+    "TABWithMiner": 5522655960514892042654,
+    "TABWithMinerPretty": "5522.655960514892042654"
+}
