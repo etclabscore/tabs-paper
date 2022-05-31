@@ -1,0 +1,71 @@
+{
+    "Header": {
+        "parentHash": "0xc2fc115fefecc8a022309e5ee7dcd8c98f0c24638b430f5cd3745f6eca5f9edd",
+        "sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
+        "miner": "0x2fb70e8cd2090636c3658021bfa58a9e51ac0a87",
+        "stateRoot": "0x042a28194a2253602cc5f7c94138e31351c2d14cce83b8b676835f3ca472db1d",
+        "transactionsRoot": "0xc359efd2d3414469095d3d84e924f31e1b6ebd2348e4e3e0733dbbfdf4907f56",
+        "receiptsRoot": "0x55fe17aadddcb0174cd528e9e3225d9411191fe9a269729adf909ad23d46f200",
+        "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "difficulty": "0x11832b9edb2b4",
+        "number": "0xe816db",
+        "gasLimit": "0x7a1200",
+        "gasUsed": "0x47cd3",
+        "timestamp": "0x62906eec",
+        "extraData": "0x55533136",
+        "mixHash": "0x0cc6c6accb22d7bb3a6470542398fb915f842839c88315b0d790f16e2f3b3c6a",
+        "nonce": "0x48eb9e4f2d6e6243",
+        "baseFeePerGas": null,
+        "hash": "0xf1d20949d52afd748889a71a1c43ae9bbe35f554b0b1752350d00a83681eee68"
+    },
+    "TxesN": 14,
+    "MinerBalanceAtParent": 8623668850241953776293,
+    "AppTxes": [
+        {
+            "CTransaction": {
+                "type": "0x0",
+                "nonce": "0x40",
+                "gasPrice": "0x3b9aca00",
+                "maxPriorityFeePerGas": null,
+                "maxFeePerGas": null,
+                "gas": "0x5208",
+                "value": "0x2ea11e32ad50000",
+                "input": "0x",
+                "v": "0x9e",
+                "r": "0xdf88b9ae695f79c8af55b96ef5a5f97aa6f0468370fe938cc81b12bb41c7916d",
+                "s": "0x3cd452b5bd2840d2bcb33aeb63d40323997577649af102c3d70fd3ef6f1e90a4",
+                "to": "0x32602a0cbc086d57c889c5866f98794bd976d532",
+                "hash": "0x2ff91434fd3e3523b722a07e83f057143e4adf7deeee315b096e5795857e4f72"
+            },
+            "From": "0x10c81b03f7082707656a68cd0690495792342945",
+            "BalanceAtParent": 19229017634141831512,
+            "BalanceAtParentPretty": "19.229017634141831512",
+            "Index": 0
+        },
+        {
+            "CTransaction": {
+                "type": "0x0",
+                "nonce": "0x3874",
+                "gasPrice": "0x3b9aca00",
+                "maxPriorityFeePerGas": null,
+                "maxFeePerGas": null,
+                "gas": "0x5208",
+                "value": "0x9367304807ed32",
+                "input": "0x",
+                "v": "0x9e",
+                "r": "0xe8dde639e4315909274701e9ef84d3e454b854d124e4cdd99a75d98550c033b5",
+                "s": "0x49eb9895d789820b30422c1f17288c6aaf10160eeff223c79b672f023a34a5d3",
+                "to": "0xdd31d1a9fbb1e2c63b62fd5930505e118e73425d",
+                "hash": "0x0d51d0852250eb7a7465303a3994e70922228c7882259f04a1cabc2be17ccebd"
+            },
+            "From": "0x0ccfdc08b61c8b9281c312df226f9958707ea5ef",
+            "BalanceAtParent": 354045922919877085254,
+            "BalanceAtParentPretty": "354.045922919877085254",
+            "Index": 1
+        }
+    ],
+    "TABWithoutMiner": 373274940554018916766,
+    "TABWithoutMinerPretty": "373.27494055401891676",
+    "TABWithMiner": 8996943790795972693059,
+    "TABWithMinerPretty": "8996.94379079597269306"
+}

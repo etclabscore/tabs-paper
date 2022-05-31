@@ -155,17 +155,33 @@ func main() {
 	constMeanLine.Color = colornames.Mediumpurple
 
 	p.Add(constMeanLine)
-	p.Legend.Add(fmt.Sprintf("Samples Mean=%0.2f", tabConstMean), constMeanLine)
+	p.Legend.Add(fmt.Sprintf("Samples Mean=%0.f", tabConstMean), constMeanLine)
 
 	tabConstMed, _ := stats.Median(tabSamples)
 	constMedLine, _ := plotter.NewLine(plotter.XYs{
-		{X: 0, Y: tabConstMed},
+		{X: p.X.Min, Y: tabConstMed},
 		{X: float64(sampleSize) * float64(w), Y: tabConstMed},
 	})
 	// constMedLine.LineStyle.Dashes = []vg.Length{3}
 	constMedLine.Color = colornames.Lightgreen
 	p.Add(constMedLine)
-	p.Legend.Add(fmt.Sprintf("Samples Median=%0.2f", tabConstMed), constMedLine)
+	p.Legend.Add(fmt.Sprintf("Samples Median=%0.f", tabConstMed), constMedLine)
+
+	// TAB percentile values
+
+	for _, x := range []float64{1, 5, 25, 75, 95, 99} {
+		v, _ := stats.Percentile(tabSamples, x)
+		line, _ := plotter.NewLine(plotter.XYs{
+			{X: p.X.Min, Y: v},
+			{X: p.X.Max, Y: v},
+		})
+		// line.LineStyle.Dashes = []vg.Length{3}
+		line.Width = 1
+		line.Color = colornames.Black
+
+		p.Legend.Add(fmt.Sprintf("%2.fth percentile=%0.f", x, v), line)
+		p.Add(line)
+	}
 
 	// Running values (eg expected TABS)
 
@@ -187,7 +203,7 @@ func main() {
 	runningTABSLine, _ := plotter.NewLine(tabsVals)
 	runningTABSLine.LineStyle.Dashes = []vg.Length{3}
 	runningTABSLine.Color = colornames.Black
-	p.Legend.Add(fmt.Sprintf("Simulated TABS (x=%d,y=%0.2f;x=%d,y=%0.2f)",
+	p.Legend.Add(fmt.Sprintf("Simulated TABS (x=%d,y=%0.f;x=%d,y=%0.f)",
 		0, tabsVals[0].Y,
 		sampleSize, tabsVals[len(tabsVals)-1].Y), runningTABSLine)
 	p.Add(runningTABSLine)
@@ -195,9 +211,9 @@ func main() {
 	// Truncate the Y limit to p95 tab
 	// For ETC this makes things more visible... sadly.
 	// Can comment for ETH, eg. the comment here:
-	// if strings.Contains(strings.ToLower(*datadir), "etc") {
-	// }
-	p.Y.Max, _ = stats.Percentile(tabSamples, 95)
+	if strings.Contains(strings.ToLower(*datadir), "etc") {
+		p.Y.Max, _ = stats.Percentile(tabSamples, 95)
+	}
 
 	os.MkdirAll("out", os.ModePerm)
 	if err := p.Save(1200, 600, fmt.Sprintf("out/%s_stacked_balances.png",

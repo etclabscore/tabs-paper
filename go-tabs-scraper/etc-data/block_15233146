@@ -1,0 +1,71 @@
+{
+    "Header": {
+        "parentHash": "0xaf5186471e8308722050b21f3355197e7ccec872636f3d4695e41d30721c4659",
+        "sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
+        "miner": "0xa6e43e5d497ce1f4d28b4270630e97308eda8b3e",
+        "stateRoot": "0x15b335a0a92008ab5db0e657f736c5932cf968f31296190a14a9c2abcb176c13",
+        "transactionsRoot": "0x00cc05a4e5a0ba0184a5d2ddf2582a5e387a3ac658a4db17eb50a07ce795b925",
+        "receiptsRoot": "0xa3fa324b9f52e1b6970b14150118cdff76e773effebbdb8d1c1cd4757562e244",
+        "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "difficulty": "0x120ed6971ea15",
+        "number": "0xe8707a",
+        "gasLimit": "0x7a1200",
+        "gasUsed": "0xae00",
+        "timestamp": "0x6294fcd6",
+        "extraData": "0x457468436c617373696350504c4e532f326d696e6572735f41534941",
+        "mixHash": "0x9b320a9737d95d50ae67d2f30850619118844e83cfe535d85c219c9863b8ddb2",
+        "nonce": "0x3b74a800013924eb",
+        "baseFeePerGas": null,
+        "hash": "0xecd80588bed3185de2ce1a5ab14efd5afc30333edc19f01ed4d7ea42db632dbf"
+    },
+    "TxesN": 2,
+    "MinerBalanceAtParent": 5640882810749133440868,
+    "AppTxes": [
+        {
+            "CTransaction": {
+                "type": "0x0",
+                "nonce": "0x4d71",
+                "gasPrice": "0x12a05f200",
+                "maxPriorityFeePerGas": null,
+                "maxFeePerGas": null,
+                "gas": "0x5bf8",
+                "value": "0x0",
+                "input": "0x3c41757468656e7469636174696f6e3e0d0a20203c5348412d3235363e376666343838653965303937313335363163343166333762623534343237336632383463316537303838373239623538643239663134636537346233643839323c2f5348412d3235363e0d0a20203c54696d657374616d703e313635333933313231373c2f54696d657374616d703e0d0a3c2f41757468656e7469636174696f6e3e",
+                "v": "0x9d",
+                "r": "0x873974f3a92065afd64062f6265facca9b0aba027f6213ed378a0c2bcf3dda79",
+                "s": "0x15f289a849969d285519ef51250fa9b346c1a34e1504238b65bb54dead48f672",
+                "to": "0x5756980e54d7cce3a2bc18fb58c8eb9863dd58e5",
+                "hash": "0xd6fcb7c9e59d857bca703395462297f5358c944689ddc5852658434134083f5f"
+            },
+            "From": "0x5756980e54d7cce3a2bc18fb58c8eb9863dd58e5",
+            "BalanceAtParent": 693856536000000000,
+            "BalanceAtParentPretty": "0.693856536",
+            "Index": 0
+        },
+        {
+            "CTransaction": {
+                "type": "0x0",
+                "nonce": "0x37",
+                "gasPrice": "0x3b9aca00",
+                "maxPriorityFeePerGas": null,
+                "maxFeePerGas": null,
+                "gas": "0x5208",
+                "value": "0x1aa4a1ef8d47b98",
+                "input": "0x",
+                "v": "0x9e",
+                "r": "0x18d2fae58a4fade4fd10010f0e54753341ce3a911985e1faf82328ccd7cf05c4",
+                "s": "0xc7369eeaa327b0f169d73f747b3303742ea2e6e51076e177dd620c054f51882",
+                "to": "0xfd1ea5fda7ed1417ea7b935a62608595846f9495",
+                "hash": "0xbe66b0cbf311b4d78100865b00ec4c6f7dd583b137fb50737e103aead5c7df12"
+            },
+            "From": "0x9fd4281cad3dfa6d66f31d4f19cfa6aa8912088f",
+            "BalanceAtParent": 120010836962888600,
+            "BalanceAtParentPretty": "0.1200108369628886",
+            "Index": 1
+        }
+    ],
+    "TABWithoutMiner": 813867372962888600,
+    "TABWithoutMinerPretty": "0.81386737296288859996",
+    "TABWithMiner": 5641696678122096329468,
+    "TABWithMinerPretty": "5641.696678122096329468"
+}
