@@ -146,16 +146,19 @@ func main() {
 
 	// Naive (overall, sampled set) stats about TAB values
 
+	yAxisTickVals := []float64{p.Y.Min, p.Y.Max}
+
 	tabConstMean, _ := stats.Mean(tabSamples)
 	constMeanLine, _ := plotter.NewLine(plotter.XYs{
 		{X: 0, Y: tabConstMean},
 		{X: float64(sampleSize) * float64(w), Y: tabConstMean},
 	})
 	// constMeanLine.LineStyle.Dashes = []vg.Length{2}
-	constMeanLine.Color = colornames.Mediumpurple
+	constMeanLine.Color = colornames.Blue
 
 	p.Add(constMeanLine)
 	p.Legend.Add(fmt.Sprintf("Samples Mean=%0.f", tabConstMean), constMeanLine)
+	yAxisTickVals = append(yAxisTickVals, tabConstMean)
 
 	tabConstMed, _ := stats.Median(tabSamples)
 	constMedLine, _ := plotter.NewLine(plotter.XYs{
@@ -166,6 +169,7 @@ func main() {
 	constMedLine.Color = colornames.Lightgreen
 	p.Add(constMedLine)
 	p.Legend.Add(fmt.Sprintf("Samples Median=%0.f", tabConstMed), constMedLine)
+	yAxisTickVals = append(yAxisTickVals, tabConstMed)
 
 	// TAB percentile values
 
@@ -175,6 +179,8 @@ func main() {
 			{X: p.X.Min, Y: v},
 			{X: p.X.Max, Y: v},
 		})
+		yAxisTickVals = append(yAxisTickVals, v)
+
 		// line.LineStyle.Dashes = []vg.Length{3}
 		line.Width = 1
 		line.Color = colornames.Black
@@ -215,11 +221,31 @@ func main() {
 		p.Y.Max, _ = stats.Percentile(tabSamples, 95)
 	}
 
+	p.Y.Tick.Marker = myTicker{vals: yAxisTickVals}
+
 	os.MkdirAll("out", os.ModePerm)
 	if err := p.Save(1200, 600, fmt.Sprintf("out/%s_stacked_balances.png",
 		strings.ReplaceAll(*datadir, string(filepath.Separator), ""))); err != nil {
 		log.Panic(err)
 	}
+}
+
+type myTicker struct {
+	vals []float64
+}
+
+func (t myTicker) Ticks(min, max float64) []plot.Tick {
+	out := []plot.Tick{}
+	for _, v := range t.vals {
+		if v < min || v > max {
+			continue
+		}
+		out = append(out, plot.Tick{
+			Value: v,
+			Label: fmt.Sprintf("%0.f", v),
+		})
+	}
+	return out
 }
 
 func mustAddressToColor(addr common.Address) color.Color {
